@@ -1,0 +1,11 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    box-sizing: inherit;
+}
+
+.contentHolder{
+    width: 100%;
+    padding: 30px 0px 30px 30px;
+}

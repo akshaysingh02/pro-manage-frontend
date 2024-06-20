@@ -1,0 +1,92 @@
+.sidebar {
+  background-color: white;
+  width: 20%;
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: 100vh;
+  border-right: 1px solid #edf5fe;
+  padding-top: 30px;
+}
+.logoWrapper {
+    padding-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+}
+.logoText {
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.buttonsWrapper {
+  width: 100%;
+
+}
+
+.sidebarNavButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  background-color: white;
+  padding: 10px 10px;
+  margin-bottom: 16px;
+  transition: all .15s ease;
+  cursor: pointer;
+}
+
+.sidebarNavButton:hover{
+    background-color: #ECF4FD;
+}
+
+.activeButton{
+    background-color: #ECF4FD;
+}
+
+
+.innerButton{
+    width: 100px;
+    text-align: left;
+}
+
+.logoutWrapper{
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: 30px;
+}
+
+
+.logoutButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #CF3636;
+    gap: 16px;
+    width: 100%;
+    padding: 10px 10px;
+    align-self: flex-end;
+    transition: all .15s ease;
+    cursor: pointer;
+}
+
+.logoutButton:hover{
+    opacity: 80%;
+}
+
+
+.logoutButton span{
+    font-weight: 600;
+}

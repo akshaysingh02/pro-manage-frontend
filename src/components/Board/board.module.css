@@ -1,0 +1,80 @@
+.welcomeWrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 30px;
+  margin-bottom: 40px;
+}
+
+.welcomeMessage {
+  color: #000;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.currentDate {
+  color: #707070;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.filterWrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 30px;
+  margin-bottom: 40px;
+}
+
+.filterWrapper h3 {
+  font-size: 29px;
+  font-weight: 500;
+}
+
+.columnWrapper {
+  width: 100%;
+  overflow-x: scroll;
+  height: 100%;
+}
+
+.taskColumn {
+  border-radius: 10px;
+  background: #eef2f5;
+  width: 360px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 24px;
+  gap: 16px;
+}
+
+.columnHeader{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.columnHeader h4{
+    font-weight: 600;
+}
+
+.colapseAllIcon{
+    cursor: pointer;
+    transition: opacity .2s ease;
+}
+
+.colapseAllIcon:hover{
+    opacity: 65%;
+}
+
+
+.cardWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+

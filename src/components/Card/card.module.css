@@ -1,0 +1,113 @@
+.card {
+  width: 100%;
+  border-radius: 20px;
+  background: #fff;
+  padding: 24px;
+}
+
+.cardHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.priorityWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.priorityCircle {
+  width: 9px;
+  height: 9px;
+  background-color: #ff2473;
+  border-radius: 50%;
+}
+
+.priorityText {
+  color: #707070;
+  font-family: Poppins;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.optionButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  height: 100%;
+}
+
+.optionButton:hover {
+  opacity: 65%;
+}
+
+.titleWrapper {
+  margin-bottom: 30px;
+  color: #000;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 32px;
+}
+
+.checklistWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.checklistHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.checklistText {
+  font-size: 14px;
+}
+
+.dropDownButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 17.6px;
+  height: 17.6px;
+  border-radius: 3.2px;
+  background: #eeecec;
+  padding: 3.2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropDownButton img {
+  width: 10.267px;
+  height: 5.133px;
+}
+
+.checklistTask {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e2e2;
+  margin-bottom: 10px;
+}
+
+.taskTitle {
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.toast {
+  display: inline-block;
+  color: #767575;
+  font-size: 8px;
+  border-radius: 8px;
+  background: #eeecec;
+  padding: 5px 10px;
+}

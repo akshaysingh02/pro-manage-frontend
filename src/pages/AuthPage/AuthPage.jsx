@@ -17,8 +17,8 @@ export default function AuthPage() {
     <div className={styles.AuthPage}>
         <div className={styles.leftSide}>
             <img className={styles.authImage} src={auth_image} alt="" />
-            <h1>Welcome aboard my friend</h1>
-            <p>Just a couple of clicks and we start</p>
+            <h1 className={styles.WelcomeHeading}>Welcome aboard my friend</h1>
+            <p className={styles.guideText}>Just a couple of clicks and we start</p>
         </div>
         <div className={styles.rightSide}>
         {isLogin ? <LoginComponent setIsLogin={setIsLogin}/> : <Signup setIsLogin={setIsLogin}/>}

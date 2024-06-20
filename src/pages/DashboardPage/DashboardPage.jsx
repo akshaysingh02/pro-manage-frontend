@@ -1,8 +1,8 @@
 import React from 'react'
-import styles from "./Dashboard.module.css"
+import Dashboard from '../../components/Dashboard/Dashboard'
 
 export default function DashboardPage() {
   return (
-    <div>DashboardPage</div>
+    <Dashboard />
   )
 }

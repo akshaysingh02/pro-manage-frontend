@@ -10,11 +10,11 @@
   margin-bottom: 45px;
 }
 
-h1{
+.WelcomeHeading{
     font-size: 33px;
     margin-bottom: 20px;
 }
-p{
+.guideText{
     font-size: 19.295px;
 }
 
