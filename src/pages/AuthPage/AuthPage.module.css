@@ -1,0 +1,55 @@
+.AuthPage {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.authImage {
+  margin-bottom: 45px;
+}
+
+h1{
+    font-size: 33px;
+    margin-bottom: 20px;
+}
+p{
+    font-size: 19.295px;
+}
+
+
+.leftSide {
+  background-color: #17a2b8;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  font-family: "Open Sans";
+  font-style: normal;
+  line-height: 200%;
+}
+
+.rightSide {
+  width: 40%;
+  padding: 88px 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: scroll;
+}
+
+@media screen and (max-width: 1440px){
+    .rightSide {
+        width: 40%;
+        padding: 48px 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: scroll;
+        height: 100%;
+      }
+}

@@ -1,0 +1,93 @@
+.loginWrapper {
+    height: 100%;
+}
+
+.loginInputWrapper {
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.authHeading {
+  color: #343434;
+  font-family: "Open Sans";
+  font-size: 33.077px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-align: center;
+  padding-bottom: 48px;
+}
+
+.inputText {
+  background: url(../../assets/email_icon.svg) no-repeat scroll 10px;
+  padding-left: 55px;
+  width: 100%;
+  border-radius: 11px;
+  height: 55px;
+  border: 1.378px solid #d0d0d0;
+  font-size: 20px;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.inputText::placeholder {
+  color: #828282;
+}
+
+.inputPassword {
+  background: url(../../assets/lock_icon.svg) no-repeat scroll 10px;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.accountText {
+  color: #828282;
+  font-family: "Open Sans";
+  font-size: 19.295px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.primaryButton {
+  width: 100%;
+  background-color: #17a2b8;
+  text-align: center;
+  font-family: "Open Sans";
+  font-size: 19.295px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 14px 30px;
+  border-radius: 55px;
+  border: none;
+  color: white;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.primaryButton:hover {
+  opacity: 70%;
+}
+
+.secondaryButton {
+  background-color: white;
+  border: 1.378px solid #17a2b8;
+  color: #17a2b8;
+}
+
+
+
+.error{
+color: #DB371F;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 23px; /* 164.286% */
+letter-spacing: 0.5px;
+margin-bottom: 22px;
+}
