@@ -44,9 +44,11 @@ export default function Card() {
           </div>
         </div>
         <div className={styles.cardToastWrapper}>
-          <div className={styles.dueDateToast}>Feb 10th</div>
+          <div className={`${styles.toast} ${styles.dueDateToast}`}>Feb 10th</div>
           <div className={styles.changerToastsWrapper}>
             <div className={styles.toast}>PROGRESS</div>
+            <div className={styles.toast}>TO DO</div>
+            <div className={styles.toast}>DONE</div>
           </div>
         </div>
       </div>

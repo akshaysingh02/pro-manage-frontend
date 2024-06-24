@@ -1,0 +1,53 @@
+.analyticsContainer {
+  width: 100%;
+  padding-right: 30px;
+}
+
+.analyticsHeading {
+  color: #000;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-bottom: 54px;
+}
+
+.analyticsCardWrapper {
+    display: flex;
+    gap: 40px;
+}
+
+.analyticsCard {
+  width: 475px;
+  height: auto;
+  border-radius: 12px;
+  background-color: #f9fcff;
+  padding: 48px 48px;
+  list-style-type: disc;
+    list-style-position: outside;
+}
+
+.analyticsLi {
+  display: flex;
+  justify-content: space-between;
+}
+
+li{
+    margin-bottom: 28px;
+}
+
+li::marker {
+    font-size: 22px;
+  color: #90c4cc;
+  line-height: 100%;
+}
+
+.dataName {
+  font-size: 18px;
+  line-height: 120%;
+}
+
+.dataValue {
+  font-size: 20px;
+  font-weight: 600;
+}

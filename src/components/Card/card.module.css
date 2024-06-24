@@ -88,6 +88,12 @@
   height: 5.133px;
 }
 
+.taskListWrapper{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 28px;
+}
+
 .checklistTask {
   display: flex;
   gap: 10px;
@@ -101,6 +107,21 @@
   color: #000;
   font-size: 14px;
   font-weight: 400;
+}
+
+.cardToastWrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.changerToastsWrapper{
+    display: flex;
+    gap: 8px;
+}
+
+.dueDateToast{
+    background-color: #CF3636 !important;
+    color: white !important;
 }
 
 .toast {

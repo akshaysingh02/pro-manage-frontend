@@ -71,7 +71,7 @@ export default function Signup({setIsLogin}) {
       <h2 className={styles.authHeading}>Register</h2>
       <div className={styles.loginInputWrapper}>
         <input
-          className={styles.inputText}
+          className={`${styles.inputText} ${styles.inputName}`}
           type="text"
           placeholder="Name"
           name="name"

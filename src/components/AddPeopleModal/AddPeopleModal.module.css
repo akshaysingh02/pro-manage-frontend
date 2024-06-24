@@ -1,0 +1,93 @@
+.overlay {
+  background: rgba(48, 61, 67, 0.55);
+  position: fixed;
+  inset: 0;
+}
+
+.addPeopleModal {
+  width: 665px;
+  background: white;
+  border-radius: 10px;
+  max-width: 800px;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  padding: 42px 32px;
+}
+
+.inputHeadingWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.peopleFormHeading {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.inputText {
+  padding-left: 15px;
+  width: 100%;
+  border-radius: 11px;
+  height: 55px;
+  border: 1.378px solid #d0d0d0;
+  font-size: 20px;
+  color: black;
+  margin-bottom: 15px;
+}
+.inputText::placeholder {
+  color: #828282;
+}
+
+.peopleButtonWrapper{
+    display: flex;
+    gap: 10px;
+}
+
+.primaryButton {
+  width: 100%;
+  background-color: #17a2b8;
+  text-align: center;
+  font-family: "Open Sans";
+  font-size: 19.295px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 14px 30px;
+  border-radius: 15px;
+  border: none;
+  color: white;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.primaryButton:hover {
+  opacity: 70%;
+}
+
+.secondaryButton {
+  background-color: white;
+  border: 1.378px solid #CF3636;
+  color: #CF3636;
+}
+
+.error {
+  color: #db371f;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 23px; /* 164.286% */
+  letter-spacing: 0.5px;
+  margin-bottom: 22px;
+  margin-top: -32px;
+  margin-left: 20px;
+}
+
+.successWrapper{
+    padding: 40px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 34px;
+}

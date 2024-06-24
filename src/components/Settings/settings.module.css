@@ -1,0 +1,57 @@
+.settingContainer {
+  width: 100%;
+}
+
+.settingHeading {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 54px;
+}
+
+.inputWrapper {
+  max-width: 400px;
+}
+
+.inputText {
+  background: url(../../assets/email_icon.svg) no-repeat scroll 10px;
+  padding-left: 55px;
+  width: 100%;
+  border-radius: 11px;
+  height: 55px;
+  border: 1.378px solid #d0d0d0;
+  font-size: 20px;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.inputText::placeholder {
+  color: #828282;
+}
+
+.inputPassword {
+  background: url(../../assets/lock_icon.svg) no-repeat scroll 10px;
+}
+.inputName {
+  background: url(../../assets/person_icon.svg) no-repeat scroll 10px;
+}
+
+.primaryButton {
+  width: 100%;
+  background-color: #17a2b8;
+  text-align: center;
+  font-family: "Open Sans";
+  font-size: 19.295px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 14px 30px;
+  border-radius: 55px;
+  border: none;
+  color: white;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.primaryButton:hover {
+  opacity: 70%;
+}

@@ -38,6 +38,10 @@
   background: url(../../assets/lock_icon.svg) no-repeat scroll 10px;
 }
 
+.inputName{
+  background: url(../../assets/person_icon.svg) no-repeat scroll 10px;
+}
+
 .buttonWrapper {
   display: flex;
   flex-direction: column;
