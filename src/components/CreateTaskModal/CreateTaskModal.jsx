@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import deleteIcon from "../../assets/deleteIcon.svg";
-import arrowDownIcon from "../../assets/downArrow.svg"
+import arrowDownIcon from "../../assets/downArrow.svg";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import styles from "./CreateTaskModal.module.css";
 import { getCollabDetails } from "../../api/auth";
 
@@ -9,10 +11,10 @@ export default function CreateTaskModal({ closeModal }) {
   const [collaborators, setCollaborators] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const assignWrapperRef = useRef(null);
+  const [dueDate, setDueDate] = useState(null);
   const [taskData, setTaskData] = useState({
     title: "",
     priority: "",
-    dueDate: "",
     checkList: [{ item: "", done: false }],
     assignedTo: "",
   });
@@ -20,7 +22,6 @@ export default function CreateTaskModal({ closeModal }) {
     title: "",
     priority: "",
     checkList: "",
-    checkListTask: "",
   });
 
   const fetchCollaborators = async () => {
@@ -38,15 +39,49 @@ export default function CreateTaskModal({ closeModal }) {
     }
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    let errors = {};
+
+    if (!taskData.title) {
+      errors.title = "Title is required";
+      isValid = false;
+    } else if (taskData.title.split(" ").length > 25) {
+      errors.title = "Title should not contain more than 25 words";
+      isValid = false;
+    }
+
+    if (!taskData.priority) {
+      errors.priority = "Please select task priority";
+      isValid = false;
+    }
+
+    if (taskData.checkList.some((check) => !check.item.trim())) {
+      errors.checkList = "Check list input can't be empty";
+      isValid = false;
+    }
+
+    setErrors(errors);
+    return isValid;
+  };
+
   const handleCreate = async () => {
+    if (!validateForm()) {
+      return;
+    }
     try {
+      // handle creation logic here
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleUpdate = async () => {
+    if (!validateForm()) {
+      return;
+    }
     try {
+      // handle update logic here
     } catch (error) {
       console.log(error);
     }
@@ -66,10 +101,45 @@ export default function CreateTaskModal({ closeModal }) {
     }
   };
 
-  const handleAssign = (email,event) => {
+  const handleAssign = (email, event) => {
     event.stopPropagation();
     setTaskData({ ...taskData, assignedTo: email });
     setShowDropdown(false);
+  };
+
+  const handlePrioritySelection = (priority) => {
+    setTaskData({ ...taskData, priority });
+  };
+
+  const handleChecklistChange = (index, value) => {
+    const newChecklist = [...taskData.checkList];
+    newChecklist[index].item = value;
+    setTaskData({ ...taskData, checkList: newChecklist });
+  };
+
+  const handleChecklistDoneChange = (index) => {
+    const newChecklist = [...taskData.checkList];
+    newChecklist[index].done = !newChecklist[index].done;
+    setTaskData({ ...taskData, checkList: newChecklist });
+  };
+
+  const addChecklistItem = () => {
+    setTaskData({
+      ...taskData,
+      checkList: [...taskData.checkList, { item: "", done: false }],
+    });
+  };
+
+  const deleteChecklistItem = (index) => {
+    if (taskData.checkList.length > 1) {
+      const newChecklist = taskData.checkList.filter((_, i) => i !== index);
+      setTaskData({ ...taskData, checkList: newChecklist });
+    }
+  };
+
+  const handleDueDateChange = (date) => {
+    setDueDate(date);
+    setTaskData({ ...taskData, dueDate: date });
   };
 
   useEffect(() => {
@@ -79,10 +149,9 @@ export default function CreateTaskModal({ closeModal }) {
     };
   }, []);
 
-//   useEffect(() => {
-//     console.log(taskData)
-//     console.log(showDropdown)
-//   }, [taskData]);
+  useEffect(() => {
+    console.log(taskData);
+  }, [taskData]);
 
   return (
     <Modal
@@ -97,12 +166,14 @@ export default function CreateTaskModal({ closeModal }) {
             Title <span className={styles.redAstrick}>*</span>
           </h3>
           <input
-            className={`${styles.inputText} ${styles.inputName}`}
+            className={`${styles.inputText}`}
             type="text"
-            // value={}
-            // onChange={}
+            value={taskData.title}
+            onChange={(e) =>
+              setTaskData({ ...taskData, title: e.target.value })
+            }
             placeholder="Enter Task Title"
-            name="name"
+            name="title"
             required
           />
           {errors.title && <span className={styles.error}>{errors.title}</span>}
@@ -112,21 +183,34 @@ export default function CreateTaskModal({ closeModal }) {
             Select Priority <span className={styles.redAstrick}>*</span>
           </h3>
           <div className={styles.priorityButtonWrapper}>
-            <div className={`${styles.priorityButton}`}>
+            <div
+              className={`${styles.priorityButton} ${
+                taskData.priority === "high" ? styles.selectedButton : ""
+              }`}
+              onClick={() => handlePrioritySelection("high")}
+            >
               <div
                 className={`${styles.coloredCircle} ${styles.redCircle}`}
               ></div>
               HIGH PRIORITY
             </div>
             <div
-              className={`${styles.priorityButton} ${styles.selectedButton}`}
+              className={`${styles.priorityButton} ${
+                taskData.priority === "moderate" ? styles.selectedButton : ""
+              }`}
+              onClick={() => handlePrioritySelection("moderate")}
             >
               <div
                 className={`${styles.coloredCircle} ${styles.blueCircle}`}
               ></div>
               MODERATE PRIORITY
             </div>
-            <div className={`${styles.priorityButton}`}>
+            <div
+              className={`${styles.priorityButton} ${
+                taskData.priority === "low" ? styles.selectedButton : ""
+              }`}
+              onClick={() => handlePrioritySelection("low")}
+            >
               <div
                 className={`${styles.coloredCircle} ${styles.greenCircle}`}
               ></div>
@@ -146,9 +230,15 @@ export default function CreateTaskModal({ closeModal }) {
             onClick={handleAssignClick}
             ref={assignWrapperRef}
           >
-            <span className={taskData.assignedTo ? styles.assignedText : styles.smallText}>{ taskData.assignedTo ||"Add an assignee"}</span>
+            <span
+              className={
+                taskData.assignedTo ? styles.assignedText : styles.smallText
+              }
+            >
+              {taskData.assignedTo || "Add an assignee"}
+            </span>
             <div className={styles.downArrowWrapper}>
-                <img src={arrowDownIcon} alt="down arrow" />
+              <img src={arrowDownIcon} alt="down arrow" />
             </div>
             {showDropdown && (
               <div className={styles.dropdown}>
@@ -159,11 +249,16 @@ export default function CreateTaskModal({ closeModal }) {
                 ) : (
                   collaborators.map((collaborator, index) => (
                     <div key={index} className={styles.collaboratorItem}>
-                        <div className={styles.initialsWrapper}>{collaborator.email[0].toUpperCase()}{collaborator.email[1].toUpperCase()}</div>
+                      <div className={styles.initialsWrapper}>
+                        {collaborator.email[0].toUpperCase()}
+                        {collaborator.email[1].toUpperCase()}
+                      </div>
                       {collaborator.email}
                       <button
-                      className={styles.assignButton}
-                      onClick={(event) => handleAssign(collaborator.email,event)}
+                        className={styles.assignButton}
+                        onClick={(event) =>
+                          handleAssign(collaborator.email, event)
+                        }
                       >
                         Assign
                       </button>
@@ -177,68 +272,49 @@ export default function CreateTaskModal({ closeModal }) {
         <div className={styles.checkListWrapper}>
           <div className={styles.checklistHeading}>
             <h3 className={styles.labelText}>
-              Checklist <span>(1/3)</span>{" "}
+              Checklist{" "}
+              <span>
+                (
+                {
+                  taskData.checkList.filter((check) => check.done).length
+                }/{taskData.checkList.length})
+              </span>{" "}
               <span className={styles.redAstrick}>*</span>
             </h3>
           </div>
           <div className={styles.listWrapper}>
-            <div className={styles.checklistItem}>
-              <div className={styles.itemInputWrapper}>
-                <input type="checkbox" />
-                <input
-                  className={styles.itemInput}
-                  type="text"
-                  placeholder="Type..."
-                />
+            {taskData.checkList.map((check, index) => (
+              <div className={styles.checklistItem} key={index}>
+                <div className={styles.itemInputWrapper}>
+                  <input
+                    type="checkbox"
+                    checked={check.done}
+                    onChange={() => handleChecklistDoneChange(index)}
+                  />
+                  <input
+                    className={styles.itemInput}
+                    type="text"
+                    placeholder="Type..."
+                    value={check.item}
+                    onChange={(e) =>
+                      handleChecklistChange(index, e.target.value)
+                    }
+                  />
+                </div>
+                <div className={styles.itemDeleteButton}>
+                  <img
+                    src={deleteIcon}
+                    alt="delete"
+                    onClick={() => deleteChecklistItem(index)}
+                  />
+                </div>
               </div>
-              <div className={styles.itemDeleteButton}>
-                <img src={deleteIcon} alt="decorative" />
-              </div>
-            </div>
-            <div className={styles.checklistItem}>
-              <div className={styles.itemInputWrapper}>
-                <input type="checkbox" />
-                <input
-                  className={styles.itemInput}
-                  type="text"
-                  placeholder="Type..."
-                />
-              </div>
-              <div className={styles.itemDeleteButton}>
-                <img src={deleteIcon} alt="decorative" />
-              </div>
-            </div>
-            <div className={styles.checklistItem}>
-              <div className={styles.itemInputWrapper}>
-                <input type="checkbox" />
-                <input
-                  className={styles.itemInput}
-                  type="text"
-                  placeholder="Type..."
-                />
-              </div>
-              <div className={styles.itemDeleteButton}>
-                <img src={deleteIcon} alt="decorative" />
-              </div>
-            </div>
-            <div className={styles.checklistItem}>
-              <div className={styles.itemInputWrapper}>
-                <input type="checkbox" />
-                <input
-                  className={styles.itemInput}
-                  type="text"
-                  placeholder="Type..."
-                />
-              </div>
-              <div className={styles.itemDeleteButton}>
-                <img src={deleteIcon} alt="decorative" />
-              </div>
-            </div>
+            ))}
           </div>
           {errors.checkList && (
             <span className={styles.error}>{errors.checkList}</span>
           )}
-          <div className={styles.addItemButton}>
+          <div className={styles.addItemButton} onClick={addChecklistItem}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="12"
@@ -267,9 +343,19 @@ export default function CreateTaskModal({ closeModal }) {
           </div>
         </div>
         <div className={styles.buttonsWrapper}>
-          <div className={styles.dueDateWrapper}>
-            <span>Select Due Date</span>
+          <div
+            className={styles.dueDateWrapper}
+            onClick={() => document.querySelector("#dueDatePicker").click()}
+          >
+            {dueDate ? dueDate.toLocaleDateString("en-GB") : "Select Due Date"}
           </div>
+          <DatePicker
+            id="dueDatePicker"
+            selected={dueDate}
+            onChange={handleDueDateChange}
+            dateFormat="dd/MM/yy"
+            customInput={<div style={{ display: "none" }} />}
+          />
           <div className={styles.actionButtonsWrapper}>
             <button
               className={`${styles.primaryButton} ${styles.secondaryButton}`}
@@ -277,10 +363,7 @@ export default function CreateTaskModal({ closeModal }) {
             >
               Cancel
             </button>
-            <button
-              className={`${styles.primaryButton}`}
-              onClick={handleCreate}
-            >
+            <button className={`${styles.primaryButton}`} onClick={handleCreate}>
               Create
             </button>
             {/* <button className={`${styles.primaryButton}`} onClick={handleUpdate}>Update</button> */}
