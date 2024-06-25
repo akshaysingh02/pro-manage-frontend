@@ -7,7 +7,6 @@ Modal.setAppElement("#root");
 
 
 export default function LogoutModal({closeModal, handleLogOut}) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <Modal
       isOpen

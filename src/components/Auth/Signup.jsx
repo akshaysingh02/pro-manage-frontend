@@ -34,6 +34,7 @@ export default function Signup({setIsLogin}) {
   };
 
   const handleSubmit = async () => {
+    setErrors({ email: "", password: "", name: "", confirmPassword: "" });
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);

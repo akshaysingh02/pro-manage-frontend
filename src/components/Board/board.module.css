@@ -101,3 +101,25 @@
 .addPeopleButton:hover{
   opacity: 65%;
 }
+
+
+.createTaskButtonWrapper{
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.plusIcon{
+  font-size: 24px;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  display: flex;
+}
+.plusIcon:hover{
+  opacity: 65%;
+}
+
+
+.plusIcon img{
+  margin-top: 5px;
+}

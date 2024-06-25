@@ -10,6 +10,10 @@
 
 .inputWrapper {
   max-width: 400px;
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .inputText {
@@ -21,7 +25,6 @@
   border: 1.378px solid #d0d0d0;
   font-size: 20px;
   color: black;
-  margin-bottom: 15px;
 }
 
 .inputText::placeholder {
@@ -55,3 +58,12 @@
 .primaryButton:hover {
   opacity: 70%;
 }
+
+.error{
+  color: #DB371F;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 23px; /* 164.286% */
+  letter-spacing: 0.5px;
+  }

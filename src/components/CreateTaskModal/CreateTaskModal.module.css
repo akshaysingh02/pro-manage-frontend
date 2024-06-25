@@ -1,0 +1,250 @@
+.overlay {
+  background: rgba(48, 61, 67, 0.55);
+  position: fixed;
+  inset: 0;
+}
+
+.addPeopleModal {
+  width: 665px;
+  background: white;
+  border-radius: 10px;
+  max-width: 800px;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  padding: 42px 32px;
+}
+.redAstrick {
+  color: #f00;
+}
+
+.labelText {
+  font-size: 14px;
+  font-size: 500;
+}
+
+.createTaskWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.priorityWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.priorityButtonWrapper {
+  display: flex;
+  gap: 12px;
+}
+
+.priorityButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e2e2;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.priorityButton:hover {
+  opacity: 70%;
+}
+
+.coloredCircle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.selectedButton {
+  background: #eeecec;
+}
+
+.redCircle {
+  background-color: #ff2473;
+}
+.blueCircle {
+  background-color: #18b0ff;
+}
+.greenCircle {
+  background-color: #63c05b;
+}
+
+.inputText {
+  padding-left: 16px;
+  width: 100%;
+  border-radius: 4px;
+  height: 44px;
+  border: 1px solid #e2e2e2;
+  font-size: 14px;
+  color: black;
+  box-shadow: 0px 1px 2px 0px rgba(77, 64, 85, 0.1);
+}
+
+.inputText::placeholder {
+  color: #9b959f;
+}
+
+.error {
+  color: #db371f;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 23px; /* 164.286% */
+  letter-spacing: 0.5px;
+}
+
+.smallText {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  color: #9b959f;
+}
+
+.assignmentWrapper {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assignWrapper {
+  height: 44px;
+  flex-grow: 1;
+  padding-left: 16px;
+  border-radius: 4px;
+  border: 1px solid #e2e2e2;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.checkListWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.checklistHeading {
+}
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 200px;
+  overflow: scroll;
+}
+
+.checklistItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #e2e2e2;
+  padding: 12px;
+}
+
+.itemInputWrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 70%;
+}
+
+.itemInput {
+  font-size: 16px;
+  font-weight: 400;
+  border: none;
+  flex-grow: 1;
+}
+input.itemInput:focus {
+  outline-width: 0;
+}
+
+.itemInput::placeholder {
+  font-size: 14px;
+  color: #cecece;
+}
+
+.itemDeleteButton {
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.itemDeleteButton:hover {
+  opacity: 70%;
+}
+
+.addItemButton {
+  display: flex;
+  gap: 10px;
+  margin-left: 15px;
+  align-items: center;
+  color: #767575;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+}
+
+.dueDateWrapper {
+  border-radius: 12px;
+  border: 1px solid #e2e2e2;
+  padding: 14px 20px;
+  color: #707070;
+}
+
+.actionButtonsWrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.primaryButton {
+  width: 100%;
+  background-color: #17a2b8;
+  text-align: center;
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 14px 50px;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.primaryButton:hover {
+  opacity: 70%;
+}
+
+.secondaryButton {
+    background-color: white;
+    border: 1.378px solid #cf3636;
+    color: #cf3636;
+  }
