@@ -1,9 +1,89 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import deleteIcon from "../../assets/deleteIcon.svg";
+import arrowDownIcon from "../../assets/downArrow.svg"
 import styles from "./CreateTaskModal.module.css";
+import { getCollabDetails } from "../../api/auth";
 
 export default function CreateTaskModal({ closeModal }) {
+  const [collaborators, setCollaborators] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const assignWrapperRef = useRef(null);
+  const [taskData, setTaskData] = useState({
+    title: "",
+    priority: "",
+    dueDate: "",
+    checkList: [{ item: "", done: false }],
+    assignedTo: "",
+  });
+  const [errors, setErrors] = useState({
+    title: "",
+    priority: "",
+    checkList: "",
+    checkListTask: "",
+  });
+
+  const fetchCollaborators = async () => {
+    try {
+      const result = await getCollabDetails();
+      if (result.status === 200) {
+        setCollaborators(result.data);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        setCollaborators(null);
+      } else {
+        alert("Error fetching collaborators details:", error);
+      }
+    }
+  };
+
+  const handleCreate = async () => {
+    try {
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAssignClick = () => {
+    fetchCollaborators();
+    setShowDropdown(true);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (
+      assignWrapperRef.current &&
+      !assignWrapperRef.current.contains(event.target)
+    ) {
+      setShowDropdown(false);
+    }
+  };
+
+  const handleAssign = (email,event) => {
+    event.stopPropagation();
+    setTaskData({ ...taskData, assignedTo: email });
+    setShowDropdown(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
+//   useEffect(() => {
+//     console.log(taskData)
+//     console.log(showDropdown)
+//   }, [taskData]);
+
   return (
     <Modal
       isOpen
@@ -25,9 +105,7 @@ export default function CreateTaskModal({ closeModal }) {
             name="name"
             required
           />
-          {/* {errors.name && (
-            <span className={styles.error}>{errors.name}</span>
-          )} */}
+          {errors.title && <span className={styles.error}>{errors.title}</span>}
         </div>
         <div className={styles.priorityWrapper}>
           <h3 className={styles.labelText}>
@@ -56,10 +134,44 @@ export default function CreateTaskModal({ closeModal }) {
             </div>
           </div>
         </div>
+        {errors.priority && (
+          <span style={{ marginTop: "-15px" }} className={styles.error}>
+            {errors.priority}
+          </span>
+        )}
         <div className={styles.assignmentWrapper}>
           <h3 className={styles.labelText}>Assign to</h3>
-          <div className={styles.assignWrapper}>
-            <span className={styles.smallText}>Add a assignee</span>
+          <div
+            className={styles.assignWrapper}
+            onClick={handleAssignClick}
+            ref={assignWrapperRef}
+          >
+            <span className={taskData.assignedTo ? styles.assignedText : styles.smallText}>{ taskData.assignedTo ||"Add an assignee"}</span>
+            <div className={styles.downArrowWrapper}>
+                <img src={arrowDownIcon} alt="down arrow" />
+            </div>
+            {showDropdown && (
+              <div className={styles.dropdown}>
+                {collaborators === null ? (
+                  <div className={styles.noCollaborators}>
+                    There are no collaborators
+                  </div>
+                ) : (
+                  collaborators.map((collaborator, index) => (
+                    <div key={index} className={styles.collaboratorItem}>
+                        <div className={styles.initialsWrapper}>{collaborator.email[0].toUpperCase()}{collaborator.email[1].toUpperCase()}</div>
+                      {collaborator.email}
+                      <button
+                      className={styles.assignButton}
+                      onClick={(event) => handleAssign(collaborator.email,event)}
+                      >
+                        Assign
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.checkListWrapper}>
@@ -123,6 +235,9 @@ export default function CreateTaskModal({ closeModal }) {
               </div>
             </div>
           </div>
+          {errors.checkList && (
+            <span className={styles.error}>{errors.checkList}</span>
+          )}
           <div className={styles.addItemButton}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -162,8 +277,13 @@ export default function CreateTaskModal({ closeModal }) {
             >
               Cancel
             </button>
-            <button className={`${styles.primaryButton}`}>Create</button>
-            {/* <button className={`${styles.primaryButton}`}>save</button> */}
+            <button
+              className={`${styles.primaryButton}`}
+              onClick={handleCreate}
+            >
+              Create
+            </button>
+            {/* <button className={`${styles.primaryButton}`} onClick={handleUpdate}>Update</button> */}
           </div>
         </div>
       </div>
