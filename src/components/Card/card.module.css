@@ -3,6 +3,8 @@
   border-radius: 20px;
   background: #fff;
   padding: 24px;
+  position: relative;
+  overflow: visible;
 }
 
 .cardHeader {
@@ -22,8 +24,17 @@
 .priorityCircle {
   width: 9px;
   height: 9px;
-  background-color: #ff2473;
   border-radius: 50%;
+}
+
+.redCircle {
+  background-color: #ff2473;
+}
+.blueCircle {
+  background-color: #18b0ff;
+}
+.greenCircle {
+  background-color: #63c05b;
 }
 
 .priorityText {

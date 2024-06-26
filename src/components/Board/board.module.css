@@ -78,7 +78,8 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
+  gap: 20px;
 }
 
 
@@ -122,4 +123,9 @@
 
 .plusIcon img{
   margin-top: 5px;
+}
+
+.selectButton{
+  border: none;
+  background-color: white;
 }

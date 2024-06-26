@@ -2,21 +2,32 @@ import React from "react";
 import styles from "./card.module.css";
 import dotsIcons from "../../assets/dots.svg";
 import arrow from "../../assets/downArrow.svg";
+import { truncateData } from "../../utils/truncate";
 
-export default function Card() {
+
+export default function Card({ task }) {
+  // console.log(task)
   return (
     <div className={styles.card}>
       <div className={styles.cardHeader}>
         <div className={styles.priorityWrapper}>
-          <div className={styles.priorityCircle}></div>
-          <span className={styles.priorityText}>HIGH PRIORITY</span>
+          <div
+            className={`${styles.priorityCircle} ${
+              task.priority === "low" ? styles.greenCircle : ""
+            } ${task.priority === "moderate" ? styles.blueCircle : ""} ${
+              task.priority === "high" ? styles.redCircle : ""
+            } `}
+          ></div>
+          <span className={styles.priorityText}>
+            {task.priority.toUpperCase()} PRIORITY
+          </span>
         </div>
         <div className={styles.optionButton}>
           <img src={dotsIcons} alt="decorative" />
         </div>
       </div>
       <div className={styles.titleWrapper}>
-        Typography change in the First two screens of th...
+        <span title={task.title}>{truncateData(task.title)}</span>
       </div>
       <div className={styles.checklistWrapper}>
         <div className={styles.checklistHeader}>
@@ -44,7 +55,9 @@ export default function Card() {
           </div>
         </div>
         <div className={styles.cardToastWrapper}>
-          <div className={`${styles.toast} ${styles.dueDateToast}`}>Feb 10th</div>
+          <div className={`${styles.toast} ${styles.dueDateToast}`}>
+            Feb 10th
+          </div>
           <div className={styles.changerToastsWrapper}>
             <div className={styles.toast}>PROGRESS</div>
             <div className={styles.toast}>TO DO</div>
