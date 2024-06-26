@@ -6,8 +6,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./CreateTaskModal.module.css";
 import { getCollabDetails } from "../../api/auth";
+import { createTask } from "../../api/task";
 
-export default function CreateTaskModal({ closeModal }) {
+export default function CreateTaskModal({ closeModal,setMessage }) {
   const [collaborators, setCollaborators] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const assignWrapperRef = useRef(null);
@@ -71,6 +72,13 @@ export default function CreateTaskModal({ closeModal }) {
     }
     try {
       // handle creation logic here
+      const response = await createTask(taskData)
+      if(response?.status === 201){
+        setMessage("Task created")
+        closeModal();
+        // console.log(response.data)
+      }
+
     } catch (error) {
       console.log(error);
     }
@@ -82,6 +90,7 @@ export default function CreateTaskModal({ closeModal }) {
     }
     try {
       // handle update logic here
+      console.log("Task updated")
     } catch (error) {
       console.log(error);
     }
@@ -149,9 +158,9 @@ export default function CreateTaskModal({ closeModal }) {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(taskData);
-  }, [taskData]);
+  // useEffect(() => {
+  //   console.log(taskData);
+  // }, [taskData]);
 
   return (
     <Modal

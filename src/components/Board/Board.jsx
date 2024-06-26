@@ -8,10 +8,16 @@ import AddPeopleModal from '../AddPeopleModal/AddPeopleModal'
 import { getFormattedDate } from '../../utils/Date'
 import { getUserDetails } from '../../api/auth'
 import CreateTaskModal from '../CreateTaskModal/CreateTaskModal'
-export default function Board() {
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ToastNotification from '../Toast/ToastNotification'
 
+
+
+export default function Board() {
+  const [message, setMessage] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [createTaskModal,setCreateTaskModal] = useState(true)
+  const [createTaskModal,setCreateTaskModal] = useState(false)
   const [userName, setUserName] = useState("")
 
   const openModal = () => {
@@ -28,6 +34,10 @@ export default function Board() {
   const closeTaskModal = () => {
     setCreateTaskModal(false);
   };
+
+  const notify = () =>{
+
+  }
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -112,7 +122,8 @@ export default function Board() {
         </div>
       </div>
       {isModalOpen && <AddPeopleModal closeModal={closeModal} />}
-      {createTaskModal && <CreateTaskModal closeModal={closeTaskModal} />}
+      {createTaskModal && <CreateTaskModal closeModal={closeTaskModal} setMessage={setMessage} />}
+      <ToastNotification toastMessage={message} />
     </>
   )
 }
