@@ -50,7 +50,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: 20px
+  height: 20px;
 }
 
 .titleWrapper {
@@ -94,10 +94,10 @@
   height: 5.133px;
 }
 
-.taskListWrapper{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 28px;
+.taskListWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 28px;
 }
 
 .checklistTask {
@@ -115,19 +115,19 @@
   font-weight: 400;
 }
 
-.cardToastWrapper{
-    display: flex;
-    justify-content: space-between;
+.cardToastWrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
-.changerToastsWrapper{
-    display: flex;
-    gap: 8px;
+.changerToastsWrapper {
+  display: flex;
+  gap: 8px;
 }
 
-.dueDateToast{
-    background-color: #CF3636 !important;
-    color: white !important;
+.dueDateToast {
+  background-color: #cf3636 !important;
+  color: white !important;
 }
 
 .toast {
@@ -138,14 +138,12 @@
   background: #eeecec;
   padding: 5px 10px;
   cursor: pointer;
-  transition: opacity .15s ease;
+  transition: opacity 0.15s ease;
 }
 
-.toast:hover{
+.toast:hover {
   opacity: 65%;
 }
-
-
 
 .loadingOverlay {
   position: absolute;
@@ -162,12 +160,15 @@
 }
 
 .dropdownMenu {
+  width: 150px;
+  font-size: 14px;
+  font-weight: 500;
   position: absolute;
-  top: 30px;
-  right: 0;
-  background-color: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  top: 40px;
+  right: 15px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0px 2px 22px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   z-index: 20;
 }
@@ -175,6 +176,7 @@
 .dropdownItem {
   padding: 8px 16px;
   cursor: pointer;
+  transition: all .1s ease-in;
 }
 
 .dropdownItem:hover {

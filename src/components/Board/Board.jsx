@@ -8,7 +8,6 @@ import AddPeopleModal from "../AddPeopleModal/AddPeopleModal";
 import { getFormattedDate } from "../../utils/Date";
 import { getUserDetails } from "../../api/auth";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastNotification from "../Toast/ToastNotification";
 import { getTasks } from "../../api/task";
@@ -62,8 +61,8 @@ export default function Board() {
     fetchTasks(filter);
   }, [filter]);
 
-  const handleStatusUpdate = () => {
-    fetchTasks(filter);
+  const handleTaskRefresh = () => {
+    fetchTasks();
   };
 
   return (
@@ -109,12 +108,12 @@ export default function Board() {
             {tasks.assignedTasks
               ?.filter((task) => task.status === "backlog")
               .map((task) => (
-                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
+                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
               ))}
             {tasks.usersTasks
               ?.filter((task) => task.status === "backlog")
               .map((task) => (
-                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
+                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
               ))}
           </div>
         </div>
@@ -134,12 +133,12 @@ export default function Board() {
             {tasks.assignedTasks
               ?.filter((task) => task.status === "to do")
               .map((task) => (
-                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
+                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
               ))}
             {tasks.usersTasks
               ?.filter((task) => task.status === "to do")
               .map((task) => (
-                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
+                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
               ))}
           </div>
         </div>
@@ -154,12 +153,12 @@ export default function Board() {
             {tasks.assignedTasks
               ?.filter((task) => task.status === "in progress")
               .map((task) => (
-                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
+                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
               ))}
             {tasks.usersTasks
               ?.filter((task) => task.status === "in progress")
               .map((task) => (
-                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
+                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
               ))}
           </div>
         </div>
@@ -174,19 +173,19 @@ export default function Board() {
             {tasks.assignedTasks
               ?.filter((task) => task.status === "done")
               .map((task) => (
-                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
+                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
               ))}
             {tasks.usersTasks
               ?.filter((task) => task.status === "done")
               .map((task) => (
-                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
+                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
               ))}
           </div>
         </div>
       </div>
       {isModalOpen && <AddPeopleModal closeModal={closeModal} />}
       {createTaskModal && (
-        <CreateTaskModal closeModal={closeTaskModal} setMessage={setMessage} />
+        <CreateTaskModal closeModal={closeTaskModal} setMessage={setMessage} handleTaskRefresh={handleTaskRefresh} />
       )}
       <ToastNotification toastMessage={message} />
     </>

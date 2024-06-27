@@ -29,18 +29,31 @@ export const getTasks = async (selectedFilter) => {
   }
 };
 
-export const updateTask = async (taskId, newStatus) => {
+export const updateTaskStatus = async (taskId, newStatus) => {
   try {
     const reqUrl = `${backendUrl}/update-status`;
     const token = JSON.parse(localStorage.getItem("token"));
     axios.defaults.headers.common["Authorization"] = token;
-    const response = await axios.put(reqUrl,{
-        taskId: taskId,
-        newStatus
-    })
-    return response
+    const response = await axios.put(reqUrl, {
+      taskId: taskId,
+      newStatus,
+    });
+    return response;
   } catch (error) {
     console.log("Unable to update task status", error);
+    return error.response.data;
+  }
+};
+
+export const updateTaskDetails = async (taskId, payLoad) => {
+  try {
+    const reqUrl = `${backendUrl}/update-task/${taskId}`;
+    const token = JSON.parse(localStorage.getItem("token"));
+    axios.defaults.headers.common["Authorization"] = token;
+    const response = await axios.put(reqUrl, payLoad);
+    return response;
+  } catch (error) {
+    console.log("Unable to update task details", error);
     return error.response.data;
   }
 };

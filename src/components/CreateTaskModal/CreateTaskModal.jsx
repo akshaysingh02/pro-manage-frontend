@@ -6,24 +6,28 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./CreateTaskModal.module.css";
 import { getCollabDetails } from "../../api/auth";
-import { createTask } from "../../api/task";
+import { createTask, updateTaskDetails } from "../../api/task";
 
-export default function CreateTaskModal({ closeModal,setMessage }) {
+export default function CreateTaskModal({ closeModal, setMessage, task, handleTaskRefresh }) {
   const [collaborators, setCollaborators] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const assignWrapperRef = useRef(null);
-  const [dueDate, setDueDate] = useState(null);
+  const [dueDate, setDueDate] = useState(task?.dueDate ? new Date(task.dueDate) : null);
   const [taskData, setTaskData] = useState({
-    title: "",
-    priority: "",
-    checkList: [{ item: "", done: false }],
-    assignedTo: "",
+    title: task?.title || "",
+    priority: task?.priority || "",
+    checkList: task?.checkList || [{ item: "", done: false }],
+    assignedTo: task?.assignedTo || "",
   });
   const [errors, setErrors] = useState({
     title: "",
     priority: "",
     checkList: "",
   });
+
+  useEffect(() => {
+    fetchCollaborators();
+  }, []);
 
   const fetchCollaborators = async () => {
     try {
@@ -71,14 +75,12 @@ export default function CreateTaskModal({ closeModal,setMessage }) {
       return;
     }
     try {
-      // handle creation logic here
-      const response = await createTask(taskData)
-      if(response?.status === 201){
-        setMessage("Task created")
+      const response = await createTask(taskData);
+      if (response?.status === 201) {
+        // setMessage("Task created");
+        handleTaskRefresh()
         closeModal();
-        // console.log(response.data)
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -89,15 +91,18 @@ export default function CreateTaskModal({ closeModal,setMessage }) {
       return;
     }
     try {
-      // handle update logic here
-      console.log("Task updated")
+      const response = await updateTaskDetails(task._id, taskData);
+      if (response?.status === 200) {
+        // setMessage("Task updated");
+        handleTaskRefresh()
+        closeModal();
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleAssignClick = () => {
-    fetchCollaborators();
     setShowDropdown(true);
   };
 
@@ -157,10 +162,6 @@ export default function CreateTaskModal({ closeModal,setMessage }) {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, []);
-
-  // useEffect(() => {
-  //   console.log(taskData);
-  // }, [taskData]);
 
   return (
     <Modal
@@ -283,10 +284,8 @@ export default function CreateTaskModal({ closeModal,setMessage }) {
             <h3 className={styles.labelText}>
               Checklist{" "}
               <span>
-                (
-                {
-                  taskData.checkList.filter((check) => check.done).length
-                }/{taskData.checkList.length})
+                ({taskData.checkList.filter((check) => check.done).length}/
+                {taskData.checkList.length})
               </span>{" "}
               <span className={styles.redAstrick}>*</span>
             </h3>
@@ -372,10 +371,21 @@ export default function CreateTaskModal({ closeModal,setMessage }) {
             >
               Cancel
             </button>
-            <button className={`${styles.primaryButton}`} onClick={handleCreate}>
-              Create
-            </button>
-            {/* <button className={`${styles.primaryButton}`} onClick={handleUpdate}>Update</button> */}
+            {task ? (
+              <button
+                className={`${styles.primaryButton}`}
+                onClick={handleUpdate}
+              >
+                Update
+              </button>
+            ) : (
+              <button
+                className={`${styles.primaryButton}`}
+                onClick={handleCreate}
+              >
+                Create
+              </button>
+            )}
           </div>
         </div>
       </div>

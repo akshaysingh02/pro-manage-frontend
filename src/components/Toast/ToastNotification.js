@@ -2,7 +2,7 @@ import React from "react";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const ToastNotification = ({ toastMessage }) => {
+const ToastNotification = ({ toastMessage,handleTaskRefresh }) => {
   React.useEffect(() => {
     if (toastMessage) {
       toast(toastMessage, {
