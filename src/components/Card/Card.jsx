@@ -1,14 +1,79 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./card.module.css";
 import dotsIcons from "../../assets/dots.svg";
 import arrow from "../../assets/downArrow.svg";
 import { truncateData } from "../../utils/truncate";
+import { updateTask } from "../../api/task";
 
+export default function Card({ task, onStatusUpdate }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const optionButtonRef = useRef(null);
 
-export default function Card({ task }) {
-  // console.log(task)
+  const statuses = ["backlog", "to do", "in progress", "done"];
+  const availableStatuses = statuses.filter((status) => status !== task.status);
+
+  const handleStatusChange = async (newStatus) => {
+    setIsLoading(true);
+    try {
+      await updateTask(task?._id, newStatus);
+      setIsLoading(false);
+      onStatusUpdate();
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target) &&
+      optionButtonRef.current &&
+      !optionButtonRef.current.contains(event.target)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+  const handleEdit = () => {
+    setIsDropdownOpen(false);
+    // Add your edit logic here
+    console.log("Edit clicked");
+  };
+
+  const handleShare = () => {
+    setIsDropdownOpen(false);
+    // Add your share logic here
+    console.log("Share clicked");
+  };
+
+  const handleDelete = () => {
+    setIsDropdownOpen(false);
+    // Add your delete logic here
+    console.log("Delete clicked");
+  };
+
   return (
     <div className={styles.card}>
+      {isLoading && <div className={styles.loadingOverlay}>Loading...</div>}
       <div className={styles.cardHeader}>
         <div className={styles.priorityWrapper}>
           <div
@@ -22,8 +87,15 @@ export default function Card({ task }) {
             {task.priority.toUpperCase()} PRIORITY
           </span>
         </div>
-        <div className={styles.optionButton}>
+        <div className={styles.optionButton} onClick={toggleDropdown} ref={optionButtonRef}>
           <img src={dotsIcons} alt="decorative" />
+          {isDropdownOpen && (
+            <div className={styles.dropdownMenu} ref={dropdownRef}>
+              <div className={styles.dropdownItem} onClick={handleEdit}>Edit</div>
+              <div className={styles.dropdownItem} onClick={handleShare}>Share</div>
+              <div className={styles.dropdownItem} onClick={handleDelete}>Delete</div>
+            </div>
+          )}
         </div>
       </div>
       <div className={styles.titleWrapper}>
@@ -32,36 +104,31 @@ export default function Card({ task }) {
       <div className={styles.checklistWrapper}>
         <div className={styles.checklistHeader}>
           <p className={styles.checklistText}>
-            Checklist <span>0/3</span>
+            Checklist <span>0/{task?.checkList.length}</span>
           </p>
           <div className={styles.dropDownButton}>
             <img src={arrow} alt="decorative" />
           </div>
         </div>
+
         <div className={styles.taskListWrapper}>
-          <div className={styles.checklistTask}>
-            <input type="checkbox" name="" id="" />
-            <span className={styles.taskTitle}>Task to be done</span>
-          </div>
-          <div className={styles.checklistTask}>
-            <input type="checkbox" name="" id="" />
-            <span className={styles.taskTitle}>Task to be done</span>
-          </div>
-          <div className={styles.checklistTask}>
-            <input type="checkbox" name="" id="" />
-            <span className={styles.taskTitle}>
-              Task to be done ede lorem Ipsum is a Dummy text t
-            </span>
-          </div>
+          {task?.checkList.map((data) => (
+            <div key={data._id} className={styles.checklistTask}>
+              <input type="checkbox" name="" id="" />
+              <span className={styles.taskTitle}>{data.item}</span>
+            </div>
+          ))}
         </div>
         <div className={styles.cardToastWrapper}>
           <div className={`${styles.toast} ${styles.dueDateToast}`}>
             Feb 10th
           </div>
           <div className={styles.changerToastsWrapper}>
-            <div className={styles.toast}>PROGRESS</div>
-            <div className={styles.toast}>TO DO</div>
-            <div className={styles.toast}>DONE</div>
+            {availableStatuses?.map((s) => (
+              <div key={s} className={styles.toast} onClick={() => handleStatusChange(s)}>
+                {s.toUpperCase()}
+              </div>
+            ))}
           </div>
         </div>
       </div>

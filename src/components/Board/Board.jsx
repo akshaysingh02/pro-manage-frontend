@@ -40,7 +40,6 @@ export default function Board() {
     try {
       const taskResult = await getTasks(filter);
       setTasks(taskResult.data);
-      // console.log(taskResult.data);
     } catch (error) {
       console.error("Error fetching Tasks:", error);
     }
@@ -62,6 +61,10 @@ export default function Board() {
   useEffect(() => {
     fetchTasks(filter);
   }, [filter]);
+
+  const handleStatusUpdate = () => {
+    fetchTasks(filter);
+  };
 
   return (
     <>
@@ -106,12 +109,12 @@ export default function Board() {
             {tasks.assignedTasks
               ?.filter((task) => task.status === "backlog")
               .map((task) => (
-                <Card key={task._id} task={task} />
+                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
               ))}
             {tasks.usersTasks
               ?.filter((task) => task.status === "backlog")
               .map((task) => (
-                <Card key={task._id} task={task} />
+                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
               ))}
           </div>
         </div>
@@ -131,12 +134,12 @@ export default function Board() {
             {tasks.assignedTasks
               ?.filter((task) => task.status === "to do")
               .map((task) => (
-                <Card key={task._id} task={task} />
+                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
               ))}
             {tasks.usersTasks
               ?.filter((task) => task.status === "to do")
               .map((task) => (
-                <Card key={task._id} task={task} />
+                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
               ))}
           </div>
         </div>
@@ -151,12 +154,12 @@ export default function Board() {
             {tasks.assignedTasks
               ?.filter((task) => task.status === "in progress")
               .map((task) => (
-                <Card key={task._id} task={task} />
+                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
               ))}
             {tasks.usersTasks
               ?.filter((task) => task.status === "in progress")
               .map((task) => (
-                <Card key={task._id} task={task} />
+                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
               ))}
           </div>
         </div>
@@ -171,12 +174,12 @@ export default function Board() {
             {tasks.assignedTasks
               ?.filter((task) => task.status === "done")
               .map((task) => (
-                <Card key={task._id} task={task} />
+                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
               ))}
             {tasks.usersTasks
               ?.filter((task) => task.status === "done")
               .map((task) => (
-                <Card key={task._id} task={task} />
+                <Card key={task._id} task={task} onStatusUpdate={handleStatusUpdate} />
               ))}
           </div>
         </div>
