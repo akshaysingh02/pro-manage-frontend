@@ -9,8 +9,8 @@ import { getFormattedDate } from "../../utils/Date";
 import { getUserDetails } from "../../api/auth";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
 import "react-toastify/dist/ReactToastify.css";
-import ToastNotification from "../Toast/ToastNotification";
 import { getTasks } from "../../api/task";
+import { toast, ToastContainer, Slide } from "react-toastify";
 
 export default function Board() {
   const [filter, setFilter] = useState("this_week");
@@ -19,6 +19,12 @@ export default function Board() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [createTaskModal, setCreateTaskModal] = useState(false);
   const [userName, setUserName] = useState("");
+  const [collapsedColumns, setCollapsedColumns] = useState({
+    backlog: false,
+    todo: false,
+    inProgress: false,
+    done: false,
+  });
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -27,6 +33,7 @@ export default function Board() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
   const openTaskModal = () => {
     setCreateTaskModal(true);
   };
@@ -65,6 +72,26 @@ export default function Board() {
     fetchTasks();
   };
 
+  const handleTaskShare = () => {
+    toast.success("Link copied", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      theme: "dark",
+      transition: Slide,
+    });
+  };
+
+  const toggleCollapseAll = (status) => {
+    setCollapsedColumns((prev) => ({
+      ...prev,
+      [status]: !prev[status],
+    }));
+  };
+
   return (
     <>
       <div className={styles.welcomeWrapper}>
@@ -97,97 +124,60 @@ export default function Board() {
       </div>
 
       <div className={styles.columnWrapper}>
-        <div className={`${styles.taskColumn}`}>
-          <div className={styles.columnHeader}>
-            <h4>Backlog</h4>
-            <div className={styles.colapseAllIcon}>
-              <img src={collapseIcon} alt="decorative" />
-            </div>
-          </div>
-          <div className={styles.cardWrapper}>
-            {tasks.assignedTasks
-              ?.filter((task) => task.status === "backlog")
-              .map((task) => (
-                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
-              ))}
-            {tasks.usersTasks
-              ?.filter((task) => task.status === "backlog")
-              .map((task) => (
-                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
-              ))}
-          </div>
-        </div>
-        <div className={`${styles.taskColumn}`}>
-          <div className={styles.columnHeader}>
-            <h4>To do</h4>
-            <div className={styles.createTaskButtonWrapper}>
-              <div className={styles.plusIcon} onClick={openTaskModal}>
-                <img src={plusIcon} alt="decorative" />
-              </div>
-              <div className={styles.colapseAllIcon}>
-                <img src={collapseIcon} alt="decorative" />
+        {["backlog", "to do", "in progress", "done"].map((status) => (
+          <div key={status} className={`${styles.taskColumn}`}>
+            <div className={styles.columnHeader}>
+              <h4 className={styles.columnHeading}>{status.replace("_", " ").toUpperCase()}</h4>
+              <div className={styles.createTaskButtonWrapper}>
+                {status === "to do" && (
+                  <div className={styles.plusIcon} onClick={openTaskModal}>
+                    <img src={plusIcon} alt="decorative" />
+                  </div>
+                )}
+                <div
+                  className={styles.colapseAllIcon}
+                  onClick={() => toggleCollapseAll(status)}
+                >
+                  <img src={collapseIcon} alt="decorative" />
+                </div>
               </div>
             </div>
-          </div>
-          <div className={styles.cardWrapper}>
-            {tasks.assignedTasks
-              ?.filter((task) => task.status === "to do")
-              .map((task) => (
-                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
-              ))}
-            {tasks.usersTasks
-              ?.filter((task) => task.status === "to do")
-              .map((task) => (
-                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
-              ))}
-          </div>
-        </div>
-        <div className={`${styles.taskColumn}`}>
-          <div className={styles.columnHeader}>
-            <h4>In Progress</h4>
-            <div className={styles.colapseAllIcon}>
-              <img src={collapseIcon} alt="decorative" />
+            <div className={styles.cardWrapper}>
+              {tasks?.assignedTasks
+                ?.filter((task) => task.status === status)
+                .map((task) => (
+                  <Card
+                    key={task._id}
+                    task={task}
+                    handleTaskRefresh={handleTaskRefresh}
+                    handleTaskShare={handleTaskShare}
+                    isCollapsed={collapsedColumns[status]}
+                  />
+                ))}
+              {tasks?.usersTasks
+                ?.filter((task) => task.status === status)
+                .map((task) => (
+                  <Card
+                    key={task._id}
+                    task={task}
+                    handleTaskRefresh={handleTaskRefresh}
+                    handleTaskShare={handleTaskShare}
+                    isCollapsed={collapsedColumns[status]}
+                  />
+                ))}
             </div>
           </div>
-          <div className={styles.cardWrapper}>
-            {tasks.assignedTasks
-              ?.filter((task) => task.status === "in progress")
-              .map((task) => (
-                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
-              ))}
-            {tasks.usersTasks
-              ?.filter((task) => task.status === "in progress")
-              .map((task) => (
-                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
-              ))}
-          </div>
-        </div>
-        <div className={`${styles.taskColumn}`}>
-          <div className={styles.columnHeader}>
-            <h4>Done</h4>
-            <div className={styles.colapseAllIcon}>
-              <img src={collapseIcon} alt="decorative" />
-            </div>
-          </div>
-          <div className={styles.cardWrapper}>
-            {tasks.assignedTasks
-              ?.filter((task) => task.status === "done")
-              .map((task) => (
-                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
-              ))}
-            {tasks.usersTasks
-              ?.filter((task) => task.status === "done")
-              .map((task) => (
-                <Card key={task._id} task={task} handleTaskRefresh={handleTaskRefresh} />
-              ))}
-          </div>
-        </div>
+        ))}
       </div>
       {isModalOpen && <AddPeopleModal closeModal={closeModal} />}
       {createTaskModal && (
-        <CreateTaskModal closeModal={closeTaskModal} setMessage={setMessage} handleTaskRefresh={handleTaskRefresh} />
+        <CreateTaskModal
+          closeModal={closeTaskModal}
+          setMessage={setMessage}
+          handleTaskRefresh={handleTaskRefresh}
+        />
       )}
-      <ToastNotification toastMessage={message} />
+      <ToastContainer />
     </>
   );
 }

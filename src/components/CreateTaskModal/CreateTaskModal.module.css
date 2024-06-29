@@ -2,6 +2,7 @@
   background: rgba(48, 61, 67, 0.55);
   position: fixed;
   inset: 0;
+  z-index: 12;
 }
 
 .addPeopleModal {

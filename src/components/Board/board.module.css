@@ -58,8 +58,9 @@
   justify-content: space-between;
 }
 
-.columnHeader h4 {
+.columnHeading{
   font-weight: 600;
+  font-size: 15px;
 }
 
 .colapseAllIcon {
@@ -111,10 +112,14 @@
 }
 
 .plusIcon{
-  font-size: 24px;
+  height: 14px;
+  width: 14px;
   transition: opacity 0.2s ease;
   cursor: pointer;
   display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 .plusIcon:hover{
   opacity: 65%;

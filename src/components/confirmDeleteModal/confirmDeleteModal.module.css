@@ -1,0 +1,57 @@
+.overlay {
+  background: rgba(48, 61, 67, 0.55);
+  position: fixed;
+  inset: 0;
+}
+
+.addPeopleModal {
+  width: 335px;
+  background: white;
+  border-radius: 10px;
+  max-width: 800px;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  padding: 42px 32px;
+}
+
+.logoutWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoutHeading {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.primaryButton {
+  width: 100%;
+  background-color: #17a2b8;
+  text-align: center;
+  font-family: "Open Sans";
+  font-size: 19.295px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 14px 30px;
+  border-radius: 15px;
+  border: none;
+  color: white;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.primaryButton:hover {
+  opacity: 70%;
+}
+
+.secondaryButton {
+  background-color: white;
+  border: 1.378px solid #cf3636;
+  color: #cf3636;
+}

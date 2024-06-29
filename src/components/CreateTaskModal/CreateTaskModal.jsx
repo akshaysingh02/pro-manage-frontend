@@ -7,8 +7,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import styles from "./CreateTaskModal.module.css";
 import { getCollabDetails } from "../../api/auth";
 import { createTask, updateTaskDetails } from "../../api/task";
+import { json } from "react-router-dom";
 
-export default function CreateTaskModal({ closeModal, setMessage, task, handleTaskRefresh }) {
+export default function CreateTaskModal({ closeModal, task, handleTaskRefresh,setIsLoading }) {
   const [collaborators, setCollaborators] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const assignWrapperRef = useRef(null);
@@ -24,9 +25,18 @@ export default function CreateTaskModal({ closeModal, setMessage, task, handleTa
     priority: "",
     checkList: "",
   });
+  const [showAssignedOption,setShowAssignedOption] = useState(true);
+
+  const checkAssignment = () => {
+    const userEmail = JSON.parse(localStorage.getItem("userEmail"));
+    if (taskData.assignedTo === userEmail) {
+      setShowAssignedOption(false);
+    }
+  };
 
   useEffect(() => {
     fetchCollaborators();
+    checkAssignment();
   }, []);
 
   const fetchCollaborators = async () => {
@@ -77,7 +87,6 @@ export default function CreateTaskModal({ closeModal, setMessage, task, handleTa
     try {
       const response = await createTask(taskData);
       if (response?.status === 201) {
-        // setMessage("Task created");
         handleTaskRefresh()
         closeModal();
       }
@@ -90,15 +99,20 @@ export default function CreateTaskModal({ closeModal, setMessage, task, handleTa
     if (!validateForm()) {
       return;
     }
+    setIsLoading(true)
     try {
+      if(!showAssignedOption){
+        delete taskData.assignedTo
+      }
       const response = await updateTaskDetails(task._id, taskData);
       if (response?.status === 200) {
-        // setMessage("Task updated");
-        handleTaskRefresh()
+        await handleTaskRefresh();
         closeModal();
+        setIsLoading(false)
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false)
     }
   };
 
@@ -233,6 +247,7 @@ export default function CreateTaskModal({ closeModal, setMessage, task, handleTa
             {errors.priority}
           </span>
         )}
+        {showAssignedOption && (
         <div className={styles.assignmentWrapper}>
           <h3 className={styles.labelText}>Assign to</h3>
           <div
@@ -279,6 +294,7 @@ export default function CreateTaskModal({ closeModal, setMessage, task, handleTa
             )}
           </div>
         </div>
+        )}
         <div className={styles.checkListWrapper}>
           <div className={styles.checklistHeading}>
             <h3 className={styles.labelText}>

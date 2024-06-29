@@ -70,6 +70,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 12px;
+  cursor: pointer;
 }
 
 .checklistText {
@@ -123,10 +124,16 @@
 .changerToastsWrapper {
   display: flex;
   gap: 8px;
+  margin-left: auto;
 }
 
 .dueDateToast {
   background-color: #cf3636 !important;
+  color: white !important;
+}
+
+.greenBackground{
+  background-color: #63C05B !important;
   color: white !important;
 }
 
@@ -181,4 +188,20 @@
 
 .dropdownItem:hover {
   background-color: #f0f0f0;
+}
+
+.assignedToWrapper{
+  background-color: #FFEBEB;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  font-size: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 1px;
+}
+
+.rotated{
+  rotate: 180deg;
 }

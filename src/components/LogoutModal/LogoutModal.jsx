@@ -15,8 +15,8 @@ export default function LogoutModal({closeModal, handleLogOut}) {
       overlayClassName={styles.overlay}
     >
     <div className={styles.logoutWrapper}>
-        <h3 className={styles.logoutHeading}>Are you sure you want to delete</h3>
-        <button className={`${styles.primaryButton} `} onClick={handleLogOut}>Yes, Delete</button>
+        <h3 className={styles.logoutHeading}>Are you sure you want Logout</h3>
+        <button className={`${styles.primaryButton} `} onClick={handleLogOut}>Yes, Logout</button>
         <button className={`${styles.primaryButton} ${styles.secondaryButton}`} onClick={closeModal}>Cancel</button>
     </div>
     </Modal>

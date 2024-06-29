@@ -3,20 +3,33 @@ import styles from "./card.module.css";
 import dotsIcons from "../../assets/dots.svg";
 import arrow from "../../assets/downArrow.svg";
 import { truncateData } from "../../utils/truncate";
-import { updateTaskStatus } from "../../api/task";
+import {
+  deleteTask,
+  updateTaskDetails,
+  updateTaskStatus,
+} from "../../api/task";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
-import ToastNotification from "../Toast/ToastNotification";
+import ConfirmDeleteModal from "../confirmDeleteModal/ConfirmDeleteModal";
+import { getFormattedDate, getMonthDay, isPastDueDate } from "../../utils/Date";
 
-export default function Card({ task, handleTaskRefresh }) {
+export default function Card({
+  task,
+  handleTaskRefresh,
+  handleTaskShare,
+  isCollapsed,
+}) {
   const [isLoading, setIsLoading] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const [checkList, setCheckList] = useState(task.checkList || []);
+  const [isTaskListOpen, setIsTaskListOpen] = useState(false);
   const dropdownRef = useRef(null);
   const optionButtonRef = useRef(null);
 
   const statuses = ["backlog", "to do", "in progress", "done"];
   const availableStatuses = statuses.filter((status) => status !== task.status);
+  const frontEndLink = "http://localhost:3000";
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -24,6 +37,14 @@ export default function Card({ task, handleTaskRefresh }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openDeleteModal = () => {
+    setDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModal(false);
   };
 
   const handleStatusChange = async (newStatus) => {
@@ -53,6 +74,61 @@ export default function Card({ task, handleTaskRefresh }) {
     }
   };
 
+  const handleShare = () => {
+    setIsDropdownOpen(false);
+    const fullUrl = `${frontEndLink}/share/${task.uniqueLink}`;
+    navigator.clipboard.writeText(fullUrl).then(() => {
+      handleTaskShare();
+    });
+  };
+
+  const handleDelete = async () => {
+    setIsDropdownOpen(false);
+    setIsLoading(true);
+    try {
+      const result = await deleteTask(task._id);
+      if (result.status === 200) {
+        console.log("task deleted");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+    console.log("Delete clicked");
+  };
+
+  const taskUpdate = async (updatedTask) => {
+    setIsLoading(true);
+    try {
+      if(updatedTask.assignedTo === JSON.parse(localStorage.getItem("userEmail"))){
+        delete updatedTask.assignedTo
+      }
+      const response = await updateTaskDetails(task._id, updatedTask);
+      if (response?.status === 200) {
+        await handleTaskRefresh();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  const handleCheckboxChange = (index) => {
+    const updatedCheckList = checkList.map((item, i) =>
+      i === index ? { ...item, done: !item.done } : item
+    );
+    setCheckList(updatedCheckList);
+
+    const updatedTask = { ...task, checkList: updatedCheckList };
+    taskUpdate(updatedTask);
+  };
+
+  const toggleTaskList = () => {
+    setIsTaskListOpen(!isTaskListOpen);
+  };
+
   useEffect(() => {
     if (isDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -65,28 +141,13 @@ export default function Card({ task, handleTaskRefresh }) {
     };
   }, [isDropdownOpen]);
 
-  // const handleEdit = () => {
-  //   setIsDropdownOpen(false);
-  //   // Add your edit logic here
-  //   try {
-  //     console.log(task);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   console.log("Edit clicked");
-  // };
+  useEffect(() => {
+    setIsTaskListOpen(false);
+  }, [isCollapsed]);
 
-  const handleShare = () => {
-    setIsDropdownOpen(false);
-    // Add your share logic here
-    console.log("Share clicked");
-  };
-
-  const handleDelete = () => {
-    setIsDropdownOpen(false);
-    // Add your delete logic here
-    console.log("Delete clicked");
-  };
+  useEffect(() => {
+    setCheckList(task.checkList || []);
+  }, [task]);
 
   return (
     <>
@@ -104,6 +165,12 @@ export default function Card({ task, handleTaskRefresh }) {
             <span className={styles.priorityText}>
               {task.priority.toUpperCase()} PRIORITY
             </span>
+            {!!task.assignedTo && (
+              <div className={styles.assignedToWrapper} title={task.assignedTo}>
+                {task?.assignedTo[0].toUpperCase()}
+                {task?.assignedTo[1].toUpperCase()}
+              </div>
+            )}
           </div>
           <div
             className={styles.optionButton}
@@ -122,7 +189,7 @@ export default function Card({ task, handleTaskRefresh }) {
                 <div
                   style={{ color: "#CF3636" }}
                   className={styles.dropdownItem}
-                  onClick={handleDelete}
+                  onClick={openDeleteModal}
                 >
                   Delete
                 </div>
@@ -134,27 +201,50 @@ export default function Card({ task, handleTaskRefresh }) {
           <span title={task.title}>{truncateData(task.title)}</span>
         </div>
         <div className={styles.checklistWrapper}>
-          <div className={styles.checklistHeader}>
+          <div className={styles.checklistHeader} onClick={toggleTaskList}>
             <p className={styles.checklistText}>
-              Checklist <span>0/{task?.checkList.length}</span>
+              Checklist{" "}
+              <span>
+                ({task?.checkList.filter((check) => check.done).length}/
+                {task?.checkList.length})
+              </span>
             </p>
-            <div className={styles.dropDownButton}>
+            <div
+              className={`${styles.dropDownButton} ${
+                isTaskListOpen ? styles.rotated : ""
+              }`}
+            >
               <img src={arrow} alt="decorative" />
             </div>
           </div>
 
-          <div className={styles.taskListWrapper}>
-            {task?.checkList.map((data) => (
-              <div key={data._id} className={styles.checklistTask}>
-                <input type="checkbox" name="" id="" />
-                <span className={styles.taskTitle}>{data.item}</span>
-              </div>
-            ))}
-          </div>
-          <div className={styles.cardToastWrapper}>
-            <div className={`${styles.toast} ${styles.dueDateToast}`}>
-              Feb 10th
+          {isTaskListOpen && (
+            <div className={styles.taskListWrapper}>
+              {checkList.map((data, index) => (
+                <div key={data._id} className={styles.checklistTask}>
+                  <input
+                    type="checkbox"
+                    name="checkbox"
+                    checked={data.done}
+                    className={styles.taskCheckbox}
+                    onChange={() => handleCheckboxChange(index)}
+                  />
+                  <span className={styles.taskTitle}>{data.item}</span>
+                </div>
+              ))}
             </div>
+          )}
+          <div className={styles.cardToastWrapper}>
+            {task?.dueDate && (
+              <div
+                className={`${styles.toast} ${
+                  isPastDueDate(task?.dueDate) ? styles.dueDateToast : ""
+                } ${task?.status === "done" ? styles.greenBackground : ""} `}
+              >
+                {getMonthDay(task.dueDate)}
+                {isPastDueDate(task?.dueDate)}
+              </div>
+            )}
             <div className={styles.changerToastsWrapper}>
               {availableStatuses?.map((s) => (
                 <div
@@ -172,12 +262,18 @@ export default function Card({ task, handleTaskRefresh }) {
       {isModalOpen && (
         <CreateTaskModal
           closeModal={closeModal}
-          setMessage={setMessage}
           task={task}
+          handleTaskRefresh={handleTaskRefresh}
+          setIsLoading={setIsLoading}
+        />
+      )}
+      {deleteModal && (
+        <ConfirmDeleteModal
+          closeDeleteModal={closeDeleteModal}
+          handleDelete={handleDelete}
           handleTaskRefresh={handleTaskRefresh}
         />
       )}
-      <ToastNotification toastMessage={message} handleTaskRefresh={handleTaskRefresh} />
     </>
   );
 }
