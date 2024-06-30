@@ -3,7 +3,7 @@ import styles from "./TaskShare.module.css";
 import { useParams } from "react-router-dom";
 import { getSharedTask } from "../../api/task";
 import logo from "../../assets/mainLogo.svg";
-import { getFormattedDate } from "../../utils/Date";
+import { getMonthDay } from "../../utils/Date";
 
 export default function TaskShare() {
   const { uniqueLink } = useParams();
@@ -87,7 +87,7 @@ export default function TaskShare() {
               </div>
             </div>
             {!!task?.dueDate && (
-                <div className={styles.dueDateWrapper}>Due Date <span className={styles.coloredDueDate}>{getFormattedDate(task?.dueDate)}</span> </div>
+                <div className={styles.dueDateWrapper}>Due Date <span className={styles.coloredDueDate}>{getMonthDay(task?.dueDate)}</span> </div>
             )}
           </div>
         </div>

@@ -40,7 +40,7 @@ export default function LoginComponent({setIsLogin}) {
     }
     const result = await loginUser(formData);
     if (result) {
-      navigate("/dashboard");
+      navigate("/");
       console.log(result);
     } else {
       setErrors({
