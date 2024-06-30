@@ -33,10 +33,10 @@ export default function Settings() {
           name: result.data.name,
           email: result.data.email,
         }));
-        setShowLoader(false)
+        setShowLoader(false);
       } catch (error) {
         console.error("Error fetching user details:", error);
-        setShowLoader(false)
+        setShowLoader(false);
       }
     };
 
@@ -122,11 +122,11 @@ export default function Settings() {
 
   return (
     <>
-      {showLoader ? (
-        <div>Loading...</div>
-      ) : (
-        <div className={styles.settingContainer}>
-          <h2 className={styles.settingHeading}>Settings</h2>
+      <div className={styles.settingContainer}>
+        <h2 className={styles.settingHeading}>Settings</h2>
+        {showLoader ? (
+          <div>Loading...</div>
+        ) : (
           <div className={styles.updateForm}>
             <div className={styles.inputWrapper}>
               <input
@@ -214,9 +214,9 @@ export default function Settings() {
               </button>
             </div>
           </div>
-          <ToastContainer />
-        </div>
-      )}
+        )}
+        <ToastContainer />
+      </div>
     </>
   );
 }
