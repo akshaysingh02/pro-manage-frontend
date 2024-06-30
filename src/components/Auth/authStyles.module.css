@@ -4,7 +4,12 @@
 
 .loginInputWrapper {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
   margin-bottom: 22px;
+  gap: 12px;
 }
 
 .authHeading {
@@ -27,7 +32,7 @@
   border: 1.378px solid #d0d0d0;
   font-size: 20px;
   color: black;
-  margin-bottom: 15px;
+  padding-right: 40px;
 }
 
 .inputText::placeholder {
@@ -93,5 +98,27 @@ font-style: normal;
 font-weight: 400;
 line-height: 23px; /* 164.286% */
 letter-spacing: 0.5px;
-margin-bottom: 22px;
+}
+
+
+.eyeWrapper{
+  position: absolute;
+  padding-right: 10px;
+  align-self: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.eye{
+  cursor: pointer;
+}
+
+.inputWrapperFix{
+  width: 100%;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

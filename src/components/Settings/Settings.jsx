@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./settings.module.css";
 import { getUserDetails, updateUser } from "../../api/auth";
 import { ToastContainer, toast } from "react-toastify";
+import eyeIcon from "../../assets/eye_icon.svg";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +19,8 @@ export default function Settings() {
     oldPassword: "",
     newPassword: "",
   });
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -50,7 +53,12 @@ export default function Settings() {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.oldPassword && !formData.newPassword && !formData.name && !formData.email) {
+    if (
+      !formData.oldPassword &&
+      !formData.newPassword &&
+      !formData.name &&
+      !formData.email
+    ) {
       newErrors.oldPassword = "All fields can't be empty";
       newErrors.newPassword = "All fields can't be empty";
       newErrors.name = "All fields can't be empty";
@@ -64,8 +72,10 @@ export default function Settings() {
     if (!formData.oldPassword && formData.newPassword) {
       newErrors.oldPassword = "Both fields are required";
       newErrors.newPassword = "Both fields are required";
-    }
-    else if(formData.oldPassword === formData.newPassword && formData.oldPassword !== ""){
+    } else if (
+      formData.oldPassword === formData.newPassword &&
+      formData.oldPassword !== ""
+    ) {
       newErrors.oldPassword = "Old and New passwords can't be same";
       newErrors.newPassword = "Old and New passwords can't be same";
     }
@@ -81,10 +91,9 @@ export default function Settings() {
       return;
     }
     const result = await updateUser(formData);
-    if( result === 401){
-      setErrors({ oldPassword: "Old password is not correct"})
-    }
-    else if (result.status === 200) {
+    if (result === 401) {
+      setErrors({ oldPassword: "Old password is not correct" });
+    } else if (result.status === 200) {
       console.log("User details updated");
       await toast.success("User Details Updated", {
         position: "top-right",
@@ -95,7 +104,7 @@ export default function Settings() {
         draggable: true,
         progress: undefined,
       });
-      
+
       const updatedFields = result.data.updatedFields;
       if (updatedFields.email || updatedFields.newPassword) {
         setTimeout(() => {
@@ -121,9 +130,7 @@ export default function Settings() {
             name="name"
             required
           />
-          {errors.name && (
-            <span className={styles.error}>{errors.name}</span>
-          )}
+          {errors.name && <span className={styles.error}>{errors.name}</span>}
         </div>
         <div className={styles.inputWrapper}>
           <input
@@ -135,34 +142,56 @@ export default function Settings() {
             placeholder="Update Email"
             required
           />
-          {errors.email && (
-            <span className={styles.error}>{errors.email}</span>
-          )}
+          {errors.email && <span className={styles.error}>{errors.email}</span>}
         </div>
         <div className={styles.inputWrapper}>
+        <div className={styles.inputWrapperFix}>
           <input
             className={`${styles.inputText} ${styles.inputPassword}`}
-            type="password"
+            type={showOldPassword ? "text" : "password"}
             name="oldPassword"
             onChange={handleChange}
             value={formData.oldPassword}
             placeholder="Old Password"
             required
           />
+          <div
+            className={styles.eyeWrapper}
+            onClick={() => setShowOldPassword(!showOldPassword)}
+          >
+            <img
+              className={styles.eye}
+              src={eyeIcon}
+              alt="passwordVisibility"
+            />
+          </div>
+          </div>
           {errors.oldPassword && (
             <span className={styles.error}>{errors.oldPassword}</span>
           )}
         </div>
         <div className={styles.inputWrapper}>
+        <div className={styles.inputWrapperFix}>
           <input
             className={`${styles.inputText} ${styles.inputPassword}`}
-            type="password"
+            type={showNewPassword ? "text" : "password"}
             name="newPassword"
             onChange={handleChange}
             value={formData.newPassword}
             placeholder="New Password"
             required
           />
+          <div
+            className={styles.eyeWrapper}
+            onClick={() => setShowNewPassword(!showNewPassword)}
+          >
+            <img
+              className={styles.eye}
+              src={eyeIcon}
+              alt="passwordVisibility"
+            />
+          </div>
+          </div>
           {errors.newPassword && (
             <span className={styles.error}>{errors.newPassword}</span>
           )}

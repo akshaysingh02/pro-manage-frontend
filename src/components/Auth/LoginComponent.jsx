@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./authStyles.module.css";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api/auth";
+import eyeIcon from "../../assets/eye_icon.svg"
 
 export default function LoginComponent({setIsLogin}) {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ export default function LoginComponent({setIsLogin}) {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -67,15 +69,27 @@ export default function LoginComponent({setIsLogin}) {
         {errors.email && <span className={styles.error}>{errors.email}</span>}
       </div>
       <div className={styles.loginInputWrapper}>
+      <div className={styles.inputWrapperFix}>
         <input
           className={`${styles.inputText} ${styles.inputPassword}`}
           name="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
           required
         />
+        <div
+            className={styles.eyeWrapper}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <img
+              className={styles.eye}
+              src={eyeIcon}
+              alt="passwordVisibility"
+            />
+          </div>
+      </div>
         {errors.email && (
           <span className={styles.error}>{errors.password}</span>
         )}

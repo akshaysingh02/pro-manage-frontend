@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./authStyles.module.css";
 import { registerUser } from "../../api/auth";
+import eyeIcon from "../../assets/eye_icon.svg"
 
 export default function Signup({setIsLogin}) {
   const [formData, setFormData] = useState({
@@ -15,6 +16,9 @@ export default function Signup({setIsLogin}) {
     password: "",
     confirmPassword: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -81,6 +85,8 @@ export default function Signup({setIsLogin}) {
           required
         />
         {errors.name && <span className={styles.error}>{errors.name}</span>}
+        </div>
+        <div className={styles.loginInputWrapper}>
         <input
           className={styles.inputText}
           type="email"
@@ -91,27 +97,55 @@ export default function Signup({setIsLogin}) {
           required
         />
         {errors.email && <span className={styles.error}>{errors.email}</span>}
+        </div>
+        <div className={styles.loginInputWrapper}>
+        <div className={styles.inputWrapperFix}>
         <input
           className={`${styles.inputText} ${styles.inputPassword}`}
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="password"
           placeholder="Password"
           onChange={handleChange}
           value={formData.password}
           required
         />
+        <div
+            className={styles.eyeWrapper}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <img
+              className={styles.eye}
+              src={eyeIcon}
+              alt="passwordVisibility"
+            />
+          </div>
+        </div>
         {errors.password && (
           <span className={styles.error}>{errors.password}</span>
         )}
+        </div>
+        <div className={styles.loginInputWrapper}>
+        <div className={styles.inputWrapperFix}>
         <input
           className={`${styles.inputText} ${styles.inputPassword}`}
-          type="text"
+          type={showConfirmPassword ? "text" : "password"}
           name="confirmPassword"
           placeholder="Confirm Password"
           onChange={handleChange}
           value={formData.confirmPassword}
           required
         />
+        <div
+            className={styles.eyeWrapper}
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <img
+              className={styles.eye}
+              src={eyeIcon}
+              alt="passwordVisibility"
+            />
+          </div>
+        </div>
         {errors.confirmPassword && (
           <span className={styles.error}>{errors.confirmPassword}</span>
         )}
