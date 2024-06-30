@@ -3,6 +3,7 @@ import styles from "./authStyles.module.css";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api/auth";
 import eyeIcon from "../../assets/eye_icon.svg"
+import loader from "../../assets/loader.svg"
 
 export default function LoginComponent({setIsLogin}) {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export default function LoginComponent({setIsLogin}) {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false)
+  const [showLoader, setShowLoader] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -40,9 +42,11 @@ export default function LoginComponent({setIsLogin}) {
       setErrors(newErrors);
       return;
     }
+    setShowLoader(true)
     const result = await loginUser(formData);
     if (result) {
       navigate("/");
+      setShowLoader(false)
       console.log(result);
     } else {
       setErrors({
@@ -50,10 +54,17 @@ export default function LoginComponent({setIsLogin}) {
         email: "Invalid credentials",
         password: "Invalid credentials",
       });
+      setShowLoader(false)
     }
   };
 
   return (
+    <>
+    {showLoader && (
+        <div className={styles.LoaderWrapper}>
+          <img src={loader} alt="loading" />
+        </div>
+      )}
     <div className={styles.loginWrapper}>
       <h2 className={styles.authHeading}>Login</h2>
       <div className={styles.loginInputWrapper}>
@@ -107,5 +118,6 @@ export default function LoginComponent({setIsLogin}) {
         </button>
       </div>
     </div>
+    </>
   );
 }

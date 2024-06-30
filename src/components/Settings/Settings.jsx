@@ -19,20 +19,24 @@ export default function Settings() {
     oldPassword: "",
     newPassword: "",
   });
+  const [showLoader, setShowLoader] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
+        setShowLoader(true);
         const result = await getUserDetails();
         setFormData((prevData) => ({
           ...prevData,
           name: result.data.name,
           email: result.data.email,
         }));
+        setShowLoader(false)
       } catch (error) {
         console.error("Error fetching user details:", error);
+        setShowLoader(false)
       }
     };
 
@@ -117,92 +121,102 @@ export default function Settings() {
   };
 
   return (
-    <div className={styles.settingContainer}>
-      <h2 className={styles.settingHeading}>Settings</h2>
-      <div className={styles.updateForm}>
-        <div className={styles.inputWrapper}>
-          <input
-            className={`${styles.inputText} ${styles.inputName}`}
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Name"
-            name="name"
-            required
-          />
-          {errors.name && <span className={styles.error}>{errors.name}</span>}
-        </div>
-        <div className={styles.inputWrapper}>
-          <input
-            className={styles.inputText}
-            type="email"
-            name="email"
-            onChange={handleChange}
-            value={formData.email}
-            placeholder="Update Email"
-            required
-          />
-          {errors.email && <span className={styles.error}>{errors.email}</span>}
-        </div>
-        <div className={styles.inputWrapper}>
-        <div className={styles.inputWrapperFix}>
-          <input
-            className={`${styles.inputText} ${styles.inputPassword}`}
-            type={showOldPassword ? "text" : "password"}
-            name="oldPassword"
-            onChange={handleChange}
-            value={formData.oldPassword}
-            placeholder="Old Password"
-            required
-          />
-          <div
-            className={styles.eyeWrapper}
-            onClick={() => setShowOldPassword(!showOldPassword)}
-          >
-            <img
-              className={styles.eye}
-              src={eyeIcon}
-              alt="passwordVisibility"
-            />
+    <>
+      {showLoader ? (
+        <div>Loading...</div>
+      ) : (
+        <div className={styles.settingContainer}>
+          <h2 className={styles.settingHeading}>Settings</h2>
+          <div className={styles.updateForm}>
+            <div className={styles.inputWrapper}>
+              <input
+                className={`${styles.inputText} ${styles.inputName}`}
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Name"
+                name="name"
+                required
+              />
+              {errors.name && (
+                <span className={styles.error}>{errors.name}</span>
+              )}
+            </div>
+            <div className={styles.inputWrapper}>
+              <input
+                className={styles.inputText}
+                type="email"
+                name="email"
+                onChange={handleChange}
+                value={formData.email}
+                placeholder="Update Email"
+                required
+              />
+              {errors.email && (
+                <span className={styles.error}>{errors.email}</span>
+              )}
+            </div>
+            <div className={styles.inputWrapper}>
+              <div className={styles.inputWrapperFix}>
+                <input
+                  className={`${styles.inputText} ${styles.inputPassword}`}
+                  type={showOldPassword ? "text" : "password"}
+                  name="oldPassword"
+                  onChange={handleChange}
+                  value={formData.oldPassword}
+                  placeholder="Old Password"
+                  required
+                />
+                <div
+                  className={styles.eyeWrapper}
+                  onClick={() => setShowOldPassword(!showOldPassword)}
+                >
+                  <img
+                    className={styles.eye}
+                    src={eyeIcon}
+                    alt="passwordVisibility"
+                  />
+                </div>
+              </div>
+              {errors.oldPassword && (
+                <span className={styles.error}>{errors.oldPassword}</span>
+              )}
+            </div>
+            <div className={styles.inputWrapper}>
+              <div className={styles.inputWrapperFix}>
+                <input
+                  className={`${styles.inputText} ${styles.inputPassword}`}
+                  type={showNewPassword ? "text" : "password"}
+                  name="newPassword"
+                  onChange={handleChange}
+                  value={formData.newPassword}
+                  placeholder="New Password"
+                  required
+                />
+                <div
+                  className={styles.eyeWrapper}
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  <img
+                    className={styles.eye}
+                    src={eyeIcon}
+                    alt="passwordVisibility"
+                  />
+                </div>
+              </div>
+              {errors.newPassword && (
+                <span className={styles.error}>{errors.newPassword}</span>
+              )}
+            </div>
+            <div className={styles.inputWrapper}>
+              <button className={styles.primaryButton} onClick={handleSubmit}>
+                Update
+              </button>
+            </div>
           </div>
-          </div>
-          {errors.oldPassword && (
-            <span className={styles.error}>{errors.oldPassword}</span>
-          )}
+          <ToastContainer />
         </div>
-        <div className={styles.inputWrapper}>
-        <div className={styles.inputWrapperFix}>
-          <input
-            className={`${styles.inputText} ${styles.inputPassword}`}
-            type={showNewPassword ? "text" : "password"}
-            name="newPassword"
-            onChange={handleChange}
-            value={formData.newPassword}
-            placeholder="New Password"
-            required
-          />
-          <div
-            className={styles.eyeWrapper}
-            onClick={() => setShowNewPassword(!showNewPassword)}
-          >
-            <img
-              className={styles.eye}
-              src={eyeIcon}
-              alt="passwordVisibility"
-            />
-          </div>
-          </div>
-          {errors.newPassword && (
-            <span className={styles.error}>{errors.newPassword}</span>
-          )}
-        </div>
-        <div className={styles.inputWrapper}>
-          <button className={styles.primaryButton} onClick={handleSubmit}>
-            Update
-          </button>
-        </div>
-      </div>
-      <ToastContainer />
-    </div>
+      )}
+    </>
   );
 }

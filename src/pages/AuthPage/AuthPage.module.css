@@ -40,6 +40,8 @@
   flex-direction: column;
   justify-content: center;
   overflow: scroll;
+  position: relative;
+  box-sizing: border-box;
 }
 
 @media screen and (max-width: 1440px){
@@ -51,5 +53,6 @@
         justify-content: center;
         overflow: scroll;
         height: 100%;
+        box-sizing: border-box;
       }
 }
