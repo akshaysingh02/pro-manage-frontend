@@ -29,7 +29,7 @@ export default function Card({
 
   const statuses = ["backlog", "to do", "in progress", "done"];
   const availableStatuses = statuses.filter((status) => status !== task.status);
-  const frontEndLink = "http://localhost:3000";
+  const frontEndLink = "https://master--pro-manage-web.netlify.app";
 
   const openModal = () => {
     setIsModalOpen(true);
