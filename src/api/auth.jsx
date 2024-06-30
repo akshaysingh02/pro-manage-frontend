@@ -1,5 +1,5 @@
 import axios from "axios";
-const backendUrl = "http://localhost:5001";
+const backendUrl = "https://promanage-server-ljlh.onrender.com";
 
 export const registerUser = async ({ name, email, password }) => {
   try {
